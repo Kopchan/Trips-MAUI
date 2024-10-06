@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MyProjects.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MyProjects"
+    xmlns:views="clr-namespace:MyProjects.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Путешествия">
+
+    <ShellContent ContentTemplate="{DataTemplate views:MainPage}" Route="MainPage" Shell.TabBarIsVisible="False" />
+
+    <TabBar>
+        <Tab Title="Направления" Icon="signpost.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:DirectionsPage}" Route="DirectionsPage"/>
+        </Tab>
+        <Tab Title="Советы" Icon="bulb.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:TipsPage}" Route="TipsPage"/>
+        </Tab>
+        <Tab Title="Мои поездки" Icon="map_pin.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:MyTripsPage}" Route="MyTripsPage"/>
+        </Tab>
+    </TabBar>
+</Shell>

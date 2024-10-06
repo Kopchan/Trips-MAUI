@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyProjects.Views.TipsPage"
+             xmlns:vm="clr-namespace:MyProjects.ViewModels">
+    <ContentPage.BindingContext>
+        <vm:TipsViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <StackLayout Padding="8">
+            <Label Text="Советы для путешественников" Style="{StaticResource Headline}"/>
+            <BoxView Margin="10"/>
+
+            <Entry Placeholder="Какой вопрос интересует?"
+                   Text="{Binding SearchQuery}" 
+                   TextChanged="Entry_TextChanged"/>
+            
+            <CollectionView ItemsSource="{Binding Categories}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid WidthRequest="160" HorizontalOptions="Start">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox
+                                Grid.Column="0"
+                                IsChecked="{Binding IsSelected}" CheckedChanged="CheckBox_CheckedChanged"/>
+                            <Label
+                                Grid.Column="1"
+                                WidthRequest="160"
+                                VerticalOptions="Center"
+                                Text="{Binding Name}"/>
+                            <CheckBox
+                                Grid.Column="1"
+                                Opacity="0"
+                                WidthRequest="160"
+                                IsChecked="{Binding IsSelected}"
+                                VerticalOptions="Start" HorizontalOptions="End"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+            <!--
+            <Button Text="Получить советы" Command="{Binding FilterSearchCommand}"/>
+            -->
+            <BoxView Margin="10"/>
+
+            <CollectionView ItemsSource="{Binding TipsFiltered}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Question}" 
+                                   FontSize="16" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" 
+                                   FontAttributes="Bold"/>
+                            <Label Text="{Binding Answer}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

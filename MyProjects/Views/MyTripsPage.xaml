@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyProjects.Views.MyTripsPage"
+             xmlns:b="clr-namespace:MyProjects.Behaviors"
+             xmlns:vm="clr-namespace:MyProjects.ViewModels"
+             xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:cv="clr-namespace:MyProjects.Converters">
+    <ContentPage.BindingContext>
+        <vm:MyTripsViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <cv:DateTimeToLocalDateConverter x:Key="DateTimeToLocalDateConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout>
+            <Label Text="Мои запланированные поездки" Style="{StaticResource Headline}" Margin="8,8,8,0"/>
+            <BoxView Margin="8,0"/>
+
+            <Editor Text="{Binding AddField}"
+                    AutoSize="TextChanges"
+                    Placeholder="Куда хотите? (Опишите)" 
+                    Keyboard="Chat"
+                    Margin="8,0"/>
+            <Button Text="Добавить поездку" Command="{Binding AddTripCommand}" 
+                    Margin="8,0"/>
+            <BoxView Margin="10"/>
+
+            <CollectionView ItemsSource="{Binding Trips}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Завершено" 
+                                        BackgroundColor="Gray"
+                                        IconImageSource="check.svg"
+                                        CommandParameter="{Binding .}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyTripsViewModel}}, 
+                                                          Path=ToggleCompletedCommand}"/>
+                                    <SwipeItem Text="Удалить" 
+                                        BackgroundColor="Red"
+                                        IconImageSource="trash.svg"
+                                        CommandParameter="{Binding .}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyTripsViewModel}}, 
+                                                          Path=DeleteTripCommand}"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <StackLayout Padding="10" BackgroundColor="{AppThemeBinding Dark={StaticResource OffBlack}, Light=White}">
+                                <Label Text="{Binding Path=Date, 
+                                    Converter={StaticResource DateTimeToLocalDateConverter}}"/>
+                                <Label Text="{Binding Destination}" FontSize="16"
+                                       TextColor="{AppThemeBinding Light=Black, 
+                                       Dark=White}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding IsDone}"
+                                                     Value="True">
+                                            <Setter Property="TextDecorations" Value="Strikethrough" />
+                                            <Setter Property="TextColor" Value="Gray" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
